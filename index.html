@@ -1,351 +1,71 @@
 <!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>HeraSpace Media</title>
-
+    <title>Algolia | User Search</title>
     <style>
-        body {
-            padding: 60px;
-        }
-        
-        .searchbox {
-            display: inline-block;
-            position: relative;
-            /*width: 200px;
-            height: 37px;*/
-            width: 300px;
-            height: 100px;
-            white-space: nowrap;
-            box-sizing: border-box;
-            font-size: 13px;
-            font-family: arial, sans-serif;
-            .algolia-autocomplete {
-                display: block;
-                height: 100%;
-            }
-        }
-        
-        .searchbox__wrapper {
-            /*width: 100%;
-            height: 100%;*/
-            width: 800px;
-            height: 300px;
-        }
-        
-        .searchbox__input {
-            display: inline-block;
-            -webkit-transition: box-shadow .4s ease, background .4s ease;
-            transition: box-shadow .4s ease, background .4s ease;
-            border: 0;
-            border-radius: 19px;
-            box-shadow: inset 0 0 0 1px #D9D9D9;
-            background: #FFFFFF;
-            padding: 0;
-            padding-right: 30px;
-            padding-left: 37px;
-            width: 300px;
-            height: 70px;
-            vertical-align: middle;
-            white-space: normal;
-            font-size: inherit;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-        
-        .searchbox__input::-webkit-search-decoration,
-        .searchbox__input::-webkit-search-cancel-button,
-        .searchbox__input::-webkit-search-results-button,
-        .searchbox__input::-webkit-search-results-decoration {
-            display: none;
-        }
-        
-        .searchbox__input:hover {
-            box-shadow: inset 0 0 0 1px silver;
-        }
-        
-        .searchbox__input:focus,
-        .searchbox__input:active {
-            outline: 0;
-            box-shadow: inset 0 0 0 1px #4098CE;
-            background: #FFFFFF;
-        }
-        
-        .searchbox__input::-webkit-input-placeholder {
-            color: #AAAAAA;
-        }
-        
-        .searchbox__input::-moz-placeholder {
-            color: #AAAAAA;
-        }
-        
-        .searchbox__input:-ms-input-placeholder {
-            color: #AAAAAA;
-        }
-        
-        .searchbox__input::placeholder {
-            color: #AAAAAA;
-        }
-        
-        .searchbox__submit {
-            position: absolute;
-            top: 0;
-            right: inherit;
-            left: 0;
-            margin: 0;
-            border: 0;
-            border-radius: 18px 0 0 18px;
-            background-color: rgba(255, 255, 255, 0);
-            padding: 0;
-            width: 37px;
-            height: 100%;
-            vertical-align: middle;
+        .search {
             text-align: center;
-            font-size: inherit;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         }
         
-        .searchbox__submit::before {
-            display: inline-block;
-            margin-right: -4px;
-            height: 100%;
-            vertical-align: middle;
-            content: '';
+        .search input {
+            font-size: 20px;
+            width: 300px;
         }
         
-        .searchbox__submit:hover,
-        .searchbox__submit:active {
-            cursor: pointer;
+        .results {
+            margin: auto;
+            text-align: center;
         }
         
-        .searchbox__submit:focus {
-            outline: 0;
-        }
-        
-        .searchbox__submit svg {
-            width: 17px;
-            height: 17px;
-            vertical-align: middle;
-            fill: #666666;
-        }
-        
-        .searchbox__reset {
-            position: absolute;
-            top: 17px;
-            right: 8px;
-            margin: 0;
-            border: 0;
-            background: none;
-            cursor: pointer;
+        .results ul {
+            list-style-type: none;
             padding: 0;
-            font-size: inherit;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            fill: rgba(0, 0, 0, 0.5);
-            &.hide {
-                display: none;
-            }
-            /*fix the hide option*/
-        }
-        
-        .searchbox__reset:focus {
-            outline: 0;
-        }
-        
-        .searchbox__reset svg {
-            display: block;
-            margin: 4px;
-            width: 13px;
-            height: 13px;
-        }
-        
-        .searchbox__input:valid~.searchbox__reset {
-            display: block;
-            -webkit-animation-name: sbx-reset-in;
-            animation-name: sbx-reset-in;
-            -webkit-animation-duration: .15s;
-            animation-duration: .15s;
-        }
-        
-        @-webkit-keyframes sbx-reset-in {
-            0% {
-                -webkit-transform: translate3d(-20%, 0, 0);
-                transform: translate3d(-20%, 0, 0);
-                opacity: 0;
-            }
-            100% {
-                -webkit-transform: none;
-                transform: none;
-                opacity: 1;
-            }
-        }
-        
-        @keyframes sbx-reset-in {
-            0% {
-                -webkit-transform: translate3d(-20%, 0, 0);
-                transform: translate3d(-20%, 0, 0);
-                opacity: 0;
-            }
-            100% {
-                -webkit-transform: none;
-                transform: none;
-                opacity: 1;
-            }
-        }
-        
-        .aa-dropdown-menu {
-            position: relative;
-            top: -6px;
-            border-radius: 3px;
-            margin: 6px 0 0;
-            padding: 0;
-            text-align: left;
-            height: auto;
-            position: relative;
-            background: transparent;
-            border: none;
-            width: 100%;
-            left: 0 !important;
-            box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.1);
-        }
-        
-        .aa-dropdown-menu:before {
-            position: absolute;
-            content: '';
-            width: 14px;
-            height: 14px;
-            background: #fff;
-            z-index: 0;
-            top: -7px;
-            border-top: 1px solid #D9D9D9;
-            border-right: 1px solid #D9D9D9;
-            transform: rotate(-45deg);
-            border-radius: 2px;
-            z-index: 999;
-            display: block;
-            left: 24px;
-        }
-        
-        .aa-dropdown-menu .aa-suggestions {
-            position: relative;
-            z-index: 1000;
-        }
-        
-        .aa-dropdown-menu [class^="aa-dataset-"] {
-            position: relative;
-            border: solid 1px #D9D9D9;
-            border-radius: 3px;
-            overflow: auto;
-            padding: 8px 8px 8px;
-        }
-        
-        .aa-dropdown-menu * {
-            box-sizing: border-box;
-        }
-        
-        .aa-suggestion {
-            font-size: 1.1em;
-            padding: 4px 4px 0;
-            display: block;
-            width: 100%;
-            height: 38px;
-            clear: both;
-            span {
-                white-space: nowrap!important;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                display: block;
-                float: left;
-                line-height: 2em;
-                width: calc(100% - 30px);
-            }
-            &.aa-cursor {
-                background: #eee;
-            }
-            em {
-                color: #4098CE;
-            }
-            img {
-                float: left;
-                vertical-align: middle;
-                height: 30px;
-                width: 20px;
-                margin-right: 6px;
-            }
         }
     </style>
 </head>
 
 <body>
-
-    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    <script src="//cdn.jsdelivr.net/autocomplete.js/0/autocomplete.min.js"></script>
-
-    <form novalidate="novalidate" onsubmit="return false;" class="searchbox">
-        <div role="search" class="searchbox__wrapper">
-            <input id="search-input" type="search" name="search" placeholder="Search for news" autocomplete="off" required="required" class="searchbox__input">
-            <button type="submit" title="Submit your search query." class="searchbox__submit">
-      <svg role="img" aria-label="Search">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#sbx-icon-search-13"></use>
-          </svg>
-        </button>
-            <button type="reset" title="Clear the search query." class="searchbox__reset hide">
-      <svg role="img" aria-label="Reset">
-        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#sbx-icon-clear-3"></use>
-        </svg>
-      </button>
-        </div>
-    </form>
-
-    <div class="svg-icons" style="height: 0; width: 0; position: absolute; visibility: hidden">
-        <svg xmlns="http://www.w3.org/2000/svg">
-    		<symbol id="sbx-icon-clear-3" viewBox="0 0 40 40"><path d="M16.228 20L1.886 5.657 0 3.772 3.772 0l1.885 1.886L20 16.228 34.343 1.886 36.228 0 40 3.772l-1.886 1.885L23.772 20l14.342 14.343L40 36.228 36.228 40l-1.885-1.886L20 23.772 5.657 38.114 3.772 40 0 36.228l1.886-1.885L16.228 20z" fill-rule="evenodd"/></symbol>
-    		<symbol id="sbx-icon-search-13" viewBox="0 0 40 40"><path d="M26.806 29.012a16.312 16.312 0 0 1-10.427 3.746C7.332 32.758 0 25.425 0 16.378 0 7.334 7.333 0 16.38 0c9.045 0 16.378 7.333 16.378 16.38 0 3.96-1.406 7.593-3.746 10.426L39.547 37.34c.607.608.61 1.59-.004 2.203a1.56 1.56 0 0 1-2.202.004L26.807 29.012zm-10.427.627c7.322 0 13.26-5.938 13.26-13.26 0-7.324-5.938-13.26-13.26-13.26-7.324 0-13.26 5.936-13.26 13.26 0 7.322 5.936 13.26 13.26 13.26z" fill-rule="evenodd"/></symbol>
-    </svg>
+    <div class="search">
+        <h1>Search brands in real time</h1>
+        <input type="text">
+    </div>
+    <div class="results">
+        <ul id="brand"></ul>
     </div>
 
+    <script src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
     <script>
-        var client = algoliasearch("N637HXAMBS", "e0f889ef9198d699ed7577646820ea12")
-        var index = client.initIndex('media_items');
-        var myAutocomplete = autocomplete('#search-input', {
-            hint: false,
-            debug: true
-        }, [{
-            source: autocomplete.sources.hits(index, {
-                hitsPerPage: 5
-            }),
-            displayKey: 'title',
-            templates: {
-                suggestion: function(suggestion) {
-                    var sugTemplate = "<img src='" + suggestion.image + "'/><span>" + suggestion._highlightResult.title.value + "</span>"
-                    return sugTemplate;
-                }
-            }
-        }]).on('autocomplete:selected', function(event, suggestion, dataset) {
-            console.log(suggestion, dataset);
+        var $input = $('input');
+        var $brand = $('#brand');
+
+
+        $(document).ready(function() {
+            var client = algoliasearch('N637HXAMBS', 'e0f889ef9198d699ed7577646820ea12');
+            var index = client.initIndex('records');
+
+            $input.keyup(function() {
+                index.search($input.val(), {
+                    hitsPerPage: 10,
+                    facets: '*'
+                }, searchCallback);
+            }).focus();
         });
 
-        document.querySelector(".searchbox [type='reset']").addEventListener("click", function() {
-            document.querySelector(".aa-input").focus();
-            this.classList.add("hide");
-            myAutocomplete.autocomplete.setVal("");
-        });
-
-        document.querySelector("#search-input").addEventListener("keyup", function() {
-            var searchbox = document.querySelector(".aa-input");
-            var reset = document.querySelector(".searchbox [type='reset']");
-            if (searchbox.value.length === 0) {
-                reset.classList.add("hide");
-            } else {
-                reset.classList.remove('hide');
+        function searchCallback(err, content) {
+            if (err) {
+                console.error(err);
+                return;
             }
-        });
+
+            $brand.empty();
+
+            for (var i = 0; i < content.hits.length; i++) {
+                $brand.append('<li>' + content.hits[i].name + '</li>');
+            }
+        };
     </script>
-
 </body>
+
+</html>
