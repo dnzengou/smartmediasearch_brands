@@ -1,69 +1,28 @@
-//var client = algoliasearch("N637HXAMBS", "e0f889ef9198d699ed7577646820ea12")
-var search = instantsearch({
-    appId: 'N637HXAMBS',
-    apiKey: 'e0f889ef9198d699ed7577646820ea12',
-    indexName: 'records',
-    urlSync: true,
-    searchParameters: {
-        hitsPerPage: 10
-    }
+var $input = $('input');
+var $brand = $('#brand');
+
+
+$(document).ready(function() {
+    var client = algoliasearch('N637HXAMBS', 'e0f889ef9198d699ed7577646820ea12');
+    var index = client.initIndex('records');
+
+    $input.keyup(function() {
+        index.search($input.val(), {
+            hitsPerPage: 10,
+            facets: '*'
+        }, searchCallback);
+    }).focus();
 });
 
-search.addWidget(
-    instantsearch.widgets.searchbox({
-        container: '#search-input'
-    })
-);
-
-search.addWidget(
-    instantsearch.widgets.hits({
-        container: '#hits',
-        templates: {
-            item: document.getElementById('hit-template').innerHTML,
-            empty: "We didn't find any results for the search <em>\"{{query}}\"</em>"
-        }
-    })
-);
-
-search.addWidget(
-    instantsearch.widgets.pagination({
-        container: '#pagination'
-    })
-);
-
-search.start();
-
-/*var index = client.initIndex('media_items');
-var myAutocomplete = autocomplete('#search-input', {
-    hint: false,
-    debug: true
-}, [{
-    source: autocomplete.sources.hits(index, {
-        hitsPerPage: 5
-    }),
-    displayKey: 'title',
-    templates: {
-        suggestion: function(suggestion) {
-            var sugTemplate = "<img src='" + suggestion.image + "'/><span>" + suggestion._highlightResult.title.value + "</span>"
-            return sugTemplate;
-        }
+function searchCallback(err, content) {
+    if (err) {
+        console.error(err);
+        return;
     }
-}]).on('autocomplete:selected', function(event, suggestion, dataset) {
-    console.log(suggestion, dataset);
-});
 
-document.querySelector(".searchbox [type='reset']").addEventListener("click", function() {
-    document.querySelector(".aa-input").focus();
-    this.classList.add("hide");
-    myAutocomplete.autocomplete.setVal("");
-});
+    $brand.empty();
 
-document.querySelector("#search-input").addEventListener("keyup", function() {
-    var searchbox = document.querySelector(".aa-input");
-    var reset = document.querySelector(".searchbox [type='reset']");
-    if (searchbox.value.length === 0) {
-        reset.classList.add("hide");
-    } else {
-        reset.classList.remove('hide');
+    for (var i = 0; i < content.hits.length; i++) {
+        $brand.append('<li>' + content.hits[i].name + ' | ' + '<i>' + content.hits[i].price + '$' + ', ' + ' </i>' + 'rating ' + content.hits[i].rating + '</li>');
     }
-});*/
+};

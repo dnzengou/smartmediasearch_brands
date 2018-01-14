@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Algolia | Smart Media search Brands</title>
+    <title>Smart Media Search Brands | Algolia</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="translucent black">
@@ -13,6 +13,7 @@
     <meta name="robots" content="all">
     <link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="css/img/favicons/favicon-16x16.png" />
 
     <!-- bootstrap & font awesome components -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
@@ -37,7 +38,7 @@
     <div class="search">
         <h1>
             <div>
-                <input type="text" id="search-input" placeholder="Search for brands" style="color:rgb(42, 95, 165); text-align:center; font-size: 75%;">
+                <input type="text" id="search-input" placeholder="Search for brands" style="color:rgb(114, 127, 145); text-align:center; font-size: 75%;">
             </div>
         </h1>
     </div>
@@ -56,36 +57,7 @@
 
     <script src="//cdn.jsdelivr.net/jquery/2.1.3/jquery.min.js"></script>
     <script src="//cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js"></script>
-    <script>
-        var $input = $('input');
-        var $brand = $('#brand');
-
-
-        $(document).ready(function() {
-            var client = algoliasearch('N637HXAMBS', 'e0f889ef9198d699ed7577646820ea12');
-            var index = client.initIndex('records');
-
-            $input.keyup(function() {
-                index.search($input.val(), {
-                    hitsPerPage: 10,
-                    facets: '*'
-                }, searchCallback);
-            }).focus();
-        });
-
-        function searchCallback(err, content) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-
-            $brand.empty();
-
-            for (var i = 0; i < content.hits.length; i++) {
-                $brand.append('<li>' + content.hits[i].name + '<i> ' + content.hits[i].price + '$' + '</i>' + '</li>');
-            }
-        };
-    </script>
+    <script src="app.js"></script>
 </body>
 
 </html>
