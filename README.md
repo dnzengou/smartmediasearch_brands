@@ -1,1 +1,1 @@
-# algolia_demo1
+# smartmediasearch_brands with best-buy raw data
